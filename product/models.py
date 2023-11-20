@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from ckeditor.fields import RichTextField
 
 
 class Category(models.Model):
@@ -22,7 +23,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, related_name='category')
     price = models.FloatField()
-    descriptions = models.TextField()
+    descriptions = RichTextField()
     slug = models.SlugField(blank=True, null=True)
     image = models.ImageField(upload_to='products')
     created = models.DateTimeField(auto_now_add=True)
