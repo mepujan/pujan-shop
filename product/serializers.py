@@ -14,9 +14,14 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('name', 'category', 'price', 'slug', 'descriptions',
-                  'image', 'created', 'updated', 'avg_rating')
-        depth = 1
+        fields = ('name', 'price', 'category', 'slug', 'descriptions',
+                  'image', 'avg_rating', 'category_name')
+        # depth = 1
+
+    def validate_price(self, price):
+        if price <= 0:
+            raise ValidationError("Price should be greater than zero.")
+        return price
 
 
 class RatingSerializer(serializers.ModelSerializer):

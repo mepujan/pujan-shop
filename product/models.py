@@ -42,12 +42,18 @@ class Product(models.Model):
     @property
     def avg_rating(self):
         ratings = self.product.all()
-        avg = 0.0
-        sum = 0.0
-        for data in ratings:
-            sum += data.rating
-        avg = sum / len(ratings)
-        return avg
+        if ratings:
+            avg = 0.0
+            sum = 0.0
+            for data in ratings:
+                sum += data.rating
+            avg = sum / len(ratings)
+            return avg
+        return 0
+
+    @property
+    def category_name(self):
+        return self.category.name
 
 
 class Rating(models.Model):
