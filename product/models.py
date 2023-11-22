@@ -22,10 +22,12 @@ class Product(models.Model):
     name = models.CharField(max_length=200, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, related_name='category')
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
     descriptions = RichTextField()
     slug = models.SlugField(blank=True, null=True)
     image = models.ImageField(upload_to='products')
+    quantity = models.PositiveIntegerField(default=1)
+    stock = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
