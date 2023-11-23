@@ -13,8 +13,14 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
-    cart = CartItemSerializer(many=True)
+    cart = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
         fields = ['id', 'cart', 'total_price']
+
+
+class AddtoCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ("product", 'quantity')

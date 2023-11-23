@@ -1,8 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import CartItem, Cart
-from .serializers import CartItemSerializer, CartSerializer
-from rest_framework.response import Response
-from rest_framework import status
+from .serializers import CartItemSerializer, CartSerializer, AddtoCartSerializer
 
 
 class CartItemModelViewSet(ModelViewSet):
@@ -13,8 +11,12 @@ class CartItemModelViewSet(ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        cart = Cart.objects.create_or_update
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return AddtoCartSerializer
+        return CartItemSerializer
 
 
 class CartModelViewSet(ModelViewSet):
