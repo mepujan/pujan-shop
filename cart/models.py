@@ -14,25 +14,29 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Cart(BaseModel):
+
+    def total_price(self):
+        items = self.cart.all()
+        total = 0
+        for item in items:
+            total += item.product.price * item.quantity
+        return total
+
+    def __str__(self) -> str:
+        return f"{self.user.username} cart created."
+
+
 class CartItem(BaseModel):
+    cart = models.ForeignKey(
+        Cart, on_delete=models.CASCADE, null=True, related_name='cart')
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='carts')
+        Product, on_delete=models.CASCADE, related_name='cart_product')
     quantity = models.PositiveBigIntegerField(default=1)
 
     def __str__(self) -> str:
         return f'{self.product.name} is added to cart.'
 
-    def total_price(self):
+    def sub_total(self):
         total = self.product.price * self.quantity
         return total
-
-
-class Cart(BaseModel):
-    carts = models.ManyToManyField(
-        CartItem, related_name='carts')
-
-    def grand_total(self):
-        grand_total = 0
-        for cart in self.carts.all():
-            grand_total += cart.product.price
-        return grand_total

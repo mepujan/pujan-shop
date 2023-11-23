@@ -1,17 +1,20 @@
 from rest_framework import serializers
 from .models import CartItem, Cart
+from product.serializers import ProductSerializer
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-    grand_total = serializers.SerializerMethodField()
+    product = ProductSerializer(many=False)
 
     class Meta:
         model = CartItem
         fields = ('id', 'product', 'user', 'quantity',
-                  'total_price', 'grand_total')
+                  'sub_total')
 
 
 class CartSerializer(serializers.ModelSerializer):
+    cart = CartItemSerializer(many=True)
+
     class Meta:
         model = Cart
-        fields = ['products', 'grand_total']
+        fields = ['id', 'cart', 'total_price']
