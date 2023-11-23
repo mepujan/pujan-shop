@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'product',
     'ckeditor',
     'django_filters',
+    'cart'
 ]
 
 MIDDLEWARE = [

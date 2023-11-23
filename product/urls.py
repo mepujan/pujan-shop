@@ -4,6 +4,7 @@ from .views import CategoryModelViewSet, ProductModelViewSet, RatingModelViewSet
 
 
 router = DefaultRouter()
+app_name = 'product'
 
 router.register(r'category', CategoryModelViewSet, basename='category')
 router.register(r'product', ProductModelViewSet, basename='product')
