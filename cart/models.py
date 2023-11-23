@@ -15,7 +15,8 @@ class BaseModel(models.Model):
 
 
 class CartItem(BaseModel):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='carts')
     quantity = models.PositiveBigIntegerField(default=1)
 
     def __str__(self) -> str:
@@ -26,6 +27,12 @@ class CartItem(BaseModel):
         return total
 
 
-# class Carts(BaseModel):
-#     products = models.ForeignKey(
-#         CartItem, on_delete=models.CASCADE, related_name='carts')
+class Carts(BaseModel):
+    products = models.ManyToManyField(
+        CartItem, related_name='carts')
+
+    def grand_total(self):
+        grand_total = 0
+        for cart in self.products.all():
+            grand_total += cart.product.price
+        return grand_total
