@@ -27,12 +27,12 @@ class CartItem(BaseModel):
         return total
 
 
-class Carts(BaseModel):
-    products = models.ManyToManyField(
+class Cart(BaseModel):
+    carts = models.ManyToManyField(
         CartItem, related_name='carts')
 
     def grand_total(self):
         grand_total = 0
-        for cart in self.products.all():
+        for cart in self.carts.all():
             grand_total += cart.product.price
         return grand_total

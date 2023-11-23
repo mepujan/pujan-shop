@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import CartItem, Carts
+from .models import CartItem, Cart
 from .serializers import CartItemSerializer, CartSerializer
 
 
@@ -22,5 +22,5 @@ class CartModelViewSet(ModelViewSet):
     serializer_class = CartSerializer
 
     def get_queryset(self):
-        qs = Carts.objects.filter(user=self.request.user)
+        qs = Cart.objects.filter(user=self.request.user)
         return qs
