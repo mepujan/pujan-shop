@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'product',
     'ckeditor',
     'django_filters',
-    'cart'
+    'cart',
+    'account',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
