@@ -26,7 +26,7 @@ class CartItemModelViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
 
-        cart = Cart.objects.get(user=self.request.user)
+        cart, _ = Cart.objects.get_or_create(user=self.request.user)
         serializer.save(user=self.request.user, cart=cart)
 
     def get_serializer_class(self):
