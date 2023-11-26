@@ -8,36 +8,35 @@ ORDER_STATUS = (
 )
 
 
-class OrderItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.item.title
-
-    def sub_total(self):
-        return self.quantity*self.item.price
-
-
 class Order(models.Model):
     tracking_number = models.CharField(max_length=10, unique=True)
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
-    products = models.ManyToManyField(OrderItem)
     order_status = models.CharField(
         max_length=10, choices=ORDER_STATUS, default='processing')
     ordered = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.user.username
+    def total_price(self):
+        orders = self.orders.all()
+        total = 0
+        for order in orders:
+            total += order.product.price * order.quantity
+        return total
 
-    def get_total(self):
-        total_price = 0
-        for orders in self.products.all():
-            total_price += orders.sub_total()
-        return total_price
+    def __str__(self):
+        return f"Order has been placed for {self.user.username } at {self.updated.strftime('%d/%m/%Y, %H:%M:%S')}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.PROTECT, related_name='order_products', null=True, blank=True)
+    quantity = models.IntegerField(default=1)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} has been ordered by {self.order.user.username} at {self.created.strftime('%d/%m/%Y, %H:%M:%S')}"
