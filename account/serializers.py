@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .validation import validate_is_empty
 from rest_framework.validators import UniqueValidator
 
 
@@ -17,7 +16,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username',
+        fields = ('id', 'first_name', 'last_name', 'username',
                   'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -31,3 +30,9 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
