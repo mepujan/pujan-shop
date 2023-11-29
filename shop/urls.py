@@ -25,7 +25,9 @@ urlpatterns = [
     path('api/', include('cart.urls', namespace='cart')),
     path('api_auth/', include('rest_framework.urls')),
     path('api/', include('account.urls', namespace='account')),
-    path('api/', include('order.urls', namespace='order'))
+    path('api/', include('order.urls', namespace='order')),
+    path('paypal/', include('paypal.standard.ipn.urls')),
+    path('api/', include('checkout.urls', namespace='checkout'))
 ]
 
 if settings.DEBUG:
