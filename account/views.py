@@ -1,10 +1,11 @@
 from rest_framework.views import APIView
-from .serializers import UserLoginSerializer, UserSignUpSerializer, UserUpdateSerializer
+from .serializers import UserLoginSerializer, UserSignUpSerializer, UserUpdateSerializer, ShippingDetailsSerializer, CreateShippingDetailsSerializer
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, logout
 from rest_framework.viewsets import ModelViewSet
+from .models import ShippingDetail
 
 
 class UserLoginView(APIView):
@@ -41,3 +42,17 @@ class SignUpViews(ModelViewSet):
         if self.request.method in ['PUT', 'PATCH']:
             return UserUpdateSerializer
         return UserSignUpSerializer
+
+
+class ShippingViewSet(ModelViewSet):
+    def get_queryset(self):
+        qs = ShippingDetail.objects.filter(user=self.request.user)
+        return qs
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return CreateShippingDetailsSerializer
+        return ShippingDetailsSerializer
+
+    def get_serializer_context(self):
+        return {'user': self.request.user}
