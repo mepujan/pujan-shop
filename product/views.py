@@ -4,6 +4,8 @@ from .serializers import CategorySerializer, ProductSerializer, RatingSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilterClass
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 
 class CategoryModelViewSet(ModelViewSet):
