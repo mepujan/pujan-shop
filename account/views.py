@@ -6,6 +6,8 @@ from rest_framework import status
 from django.contrib.auth import authenticate, logout
 from rest_framework.viewsets import ModelViewSet
 from .models import ShippingDetail
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserLoginView(APIView):
@@ -45,6 +47,9 @@ class SignUpViews(ModelViewSet):
 
 
 class ShippingViewSet(ModelViewSet):
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]
+
     def get_queryset(self):
         qs = ShippingDetail.objects.filter(user=self.request.user)
         return qs
