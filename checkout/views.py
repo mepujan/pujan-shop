@@ -3,10 +3,14 @@ from paypalrestsdk import Payment
 from rest_framework.response import Response
 from cart.models import Cart
 from .serializers import PaymentSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 
 class MakePaymentView(APIView):
     serializer_class = PaymentSerializer
+    permission_classes = [IsAuthenticated,]
+    authentication_classes = [TokenAuthentication,]
 
     def post(self, request):
         cart_id = request.POST.get('cart_id')

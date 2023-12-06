@@ -9,6 +9,8 @@ from rest_framework.filters import SearchFilter
 class CategoryModelViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]
 
 
 class ProductModelViewSet(ModelViewSet):
@@ -18,8 +20,12 @@ class ProductModelViewSet(ModelViewSet):
     search_fields = ['name']
     filterset_fields = ['category', 'name', 'stock', 'price']
     filterset_class = ProductFilterClass
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]
 
 
 class RatingModelViewSet(ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]

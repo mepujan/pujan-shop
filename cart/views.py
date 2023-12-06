@@ -3,10 +3,14 @@ from .models import CartItem, Cart
 from .serializers import CartItemSerializer, CartSerializer, AddtoCartSerializer, UpdateCartSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class CartItemModelViewSet(ModelViewSet):
     serializer_class = CartItemSerializer
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
         qs = CartItem.objects.filter(user=self.request.user)
@@ -39,6 +43,8 @@ class CartItemModelViewSet(ModelViewSet):
 
 class CartModelViewSet(ModelViewSet):
     serializer_class = CartSerializer
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
         qs = Cart.objects.filter(user=self.request.user)
